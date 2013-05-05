@@ -1,6 +1,6 @@
 {
   "name": "gyp",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A gyp file reader / processor",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,8 @@
   "author": "",
   "license": "BSD",
   "dependencies": {
-    "gyp-merge": "0.2.0"
+    "gyp-merge": "0.2.0",
+    "gyp-load": "0.0.0"
   },
   "devDependencies": {
     "tap": "~0.4.2"
