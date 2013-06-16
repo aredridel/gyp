@@ -13,7 +13,7 @@ var gyp = module.exports = function gyp(arg, variables, cb) {
         throw new Error("Root must be an object");
     }
 
-    recurse(arg, variables, cb);
+    recurse(arg, variables, 'pre', cb);
 
     return;
 
@@ -24,9 +24,9 @@ var gyp = module.exports = function gyp(arg, variables, cb) {
     cb(null, arg);
 };
 
-function recurse(obj, variables, cb) {
+function recurse(obj, variables, which, cb) {
     oiter(obj, function(e, c) {
-        handle(e, variables, c);
+        handle(e, variables, which, c);
     }, cb);
 }
 
@@ -47,9 +47,9 @@ function oiter(obj, proc, cb) {
     }
 }
 
-function handle(thing, variables, cb) {
+function handle(thing, variables, which, cb) {
     if (Array.isArray(thing)) {
-        expansions.expandArray(thing, variables, 'pre', function (err, res) {
+        expansions.expandArray(thing, variables, which, function (err, res) {
             cb(null, (typeof res != 'undefined' ? res : thing).map(function (e) {
                 return recurse(e, variables);
             }));
@@ -79,7 +79,7 @@ function handle(thing, variables, cb) {
         cb(null, out);
     } else {
         thing = "" + thing;
-        expansions.expandString(thing, variables, 'pre', function(err, res) {
+        expansions.expandString(thing, variables, which, function(err, res) {
             cb(null, typeof res != 'undefined' ? res : thing);
         });
     }
