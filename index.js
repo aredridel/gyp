@@ -13,11 +13,9 @@ var gyp = module.exports = function gyp(arg, variables, cb) {
         throw new Error("Root must be an object");
     }
 
-    recurse(arg, variables, 'pre', cb);
+    handle(arg, variables, 'pre', cb);
 
     return;
-
-    /// @todo do conditional processing
 
     /// @todo do post-phase expansions
 
@@ -38,10 +36,15 @@ function oiter(obj, proc, cb) {
         (function(j) {
             setImmediate(function() {
                 proc(obj[j], function(err, res) {
-                    if (err) cb(err);
-                    result[j] = res;
-                    if (++done == length) cb(null, result);
-                });
+                    if (err == 'continue') {
+                        if (++done == length) cb(null, result);
+                    } else if (err) {
+                        cb(err);
+                    } else {
+                        result[j] = res;
+                        if (++done == length) cb(null, result);
+                    }
+                }, j);
             });
         })(i);
     }
@@ -69,14 +72,13 @@ function handle(thing, variables, which, cb) {
         }
 
         if (thing.conditions) {
+            /// @todo do conditional processing
         }
 
-        for (var v in thing) {
-            if (v != 'variables') continue;
-            out[v] = recurse(thing[v], variables);
-        }
-
-        cb(null, out);
+        oiter(thing, function(e, cont, key) {
+            if (key == 'variables') return cont('continue');
+            handle(e, variables, which, cont);
+        }, cb);
     } else {
         thing = "" + thing;
         expansions.expandString(thing, variables, which, function(err, res) {
