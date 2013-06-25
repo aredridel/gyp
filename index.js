@@ -50,12 +50,36 @@ function oiter(obj, proc, cb) {
     }
 }
 
+function aiter(obj, proc, cb) {
+    var done = 0;
+    var result = {};
+    var length = obj.length;
+    for (var i = 0; i < length; i++) {
+        (function(j) {
+            setImmediate(function() {
+                proc(obj[j], function(err, res) {
+                    if (err == 'continue') {
+                        if (++done == length) cb(null, result);
+                    } else if (err) {
+                        cb(err);
+                    } else {
+                        result[j] = res;
+                        if (++done == length) cb(null, result);
+                    }
+                }, j);
+            });
+        })(i);
+    }
+}
+
 function handle(thing, variables, which, cb) {
     if (Array.isArray(thing)) {
         expansions.expandArray(thing, variables, which, function (err, res) {
-            cb(null, (typeof res != 'undefined' ? res : thing).map(function (e) {
-                return recurse(e, variables);
-            }));
+            if (err) return cb(err);
+
+            aiter(typeof res != 'undefined' ? res : thing, function (e, cont) {
+                handle(e, variables, which, cont);
+            }, cb);
         });
     } else if (typeof thing == 'object') {
         var m;

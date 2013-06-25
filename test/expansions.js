@@ -17,3 +17,12 @@ test("variable section expansions", function(t) {
     });
 });
 
+test("list expansion", function(t) {
+    gyp({ a: [ "<@(v)" ], b: [ "<@(l)" ] }, {l: [1, 2], v: "1"}, function(err, out) {
+        t.equal(out.a[0], "1", "a[0] should be 1");
+        t.equal(out.b[0], "1", "b[0] should be 1");
+        t.equal(out.b[1], "2", "b[1] should be 2");
+        t.end();
+    });
+});
+
