@@ -6,13 +6,16 @@
   "scripts": {
     "test": "tap test"
   },
-  "repository": "",
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aredridel/gyp"
+  },
+  "author": "Aria Stewart <aredridel@nbtsc.org>",
   "license": "BSD",
   "dependencies": {
-    "gyp-merge": "0.2.0",
-    "gyp-expansions": "0.0.1",
-    "gyp-load": "0.0.0"
+    "gyp-merge": "0.2.x",
+    "gyp-expansions": "0.0.x",
+    "gyp-load": "0.0.x"
   },
   "devDependencies": {
     "tap": "~0.4.2"
