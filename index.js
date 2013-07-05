@@ -3,6 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var expansions = require('gyp-expansions');
 var load = require('gyp-load');
+var cond = require('gyp-conditions');
 
 var gyp = module.exports = function gyp(arg, variables, cb) {
     if (typeof arg == 'string' || arg instanceof String) {
@@ -96,7 +97,13 @@ function handle(thing, variables, which, cb) {
         }
 
         if (thing.conditions) {
-            /// @todo do conditional processing
+            thing.conditions.forEach(function (e) {
+                if (cond(e[0], variables)) {
+                    thing = merge(e[1], thing);
+                } else if (e[2]) {
+                    thing = merge(e[2], thing);
+                }
+            });
         }
 
         oiter(thing, function(e, cont, key) {
