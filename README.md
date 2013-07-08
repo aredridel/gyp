@@ -13,12 +13,6 @@ Usage
         // and include files processed
     });
 
-Still to do
------------
-
-* Handle the non-JSON parsing parts like comments
-* Add a simple hook for post-phase variable expansions and handle build-specific use cases
-
 Blue Sky
 --------
 
