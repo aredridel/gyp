@@ -15,10 +15,10 @@
   "dependencies": {
     "gyp-merge": "~0.2.0",
     "gyp-expansions": "~0.0.0",
-    "gyp-conditions": "0.0.4",
-    "gyp-load": "~0.5.0"
+    "gyp-conditions": "0.0.5",
+    "gyp-load": "~0.6.0"
   },
   "devDependencies": {
-    "tap": "~0.4.2"
+    "tap": "~6.2.0"
   }
 }
