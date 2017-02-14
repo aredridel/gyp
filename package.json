@@ -19,6 +19,6 @@
     "gyp-load": "~0.5.0"
   },
   "devDependencies": {
-    "tap": "~9.0.3"
+    "tap": "~10.1.1"
   }
 }
